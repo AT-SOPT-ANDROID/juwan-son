@@ -3,4 +3,11 @@
     <string name="title_activity_my">MyActivity</string>
     <string name="title_activity_signin">SigninActivity</string>
     <string name="title_activity_signup">SignupActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home_viewmodel">HomeViewmodel</string>
+    <string name="title_activity_top_tab_bar">TopTabBar</string>
+    <string name="title_activity_bottom_nav_bar">BottomNavBar</string>
+    <string name="title_activity_live_item_card">LiveItemCard</string>
+    <string name="title_activity_app_module">AppModule</string>
+    <string name="title_activity_shorts_screen">ShortsScreen</string>
 </resources>

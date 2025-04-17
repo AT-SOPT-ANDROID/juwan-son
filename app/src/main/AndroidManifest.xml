@@ -13,22 +13,57 @@
         android:theme="@style/Theme.ATSOPTANDROID"
         tools:targetApi="31">
         <activity
-            android:name=".SignupActivity"
+            android:name=".presentaion.home.ShortsScreen"
+            android:exported="false"
+            android:label="@string/title_activity_shorts_screen"
+            android:theme="@style/Theme.ATSOPTANDROID" />
+        <activity
+            android:name=".di.AppModule"
+            android:exported="false"
+            android:label="@string/title_activity_app_module"
+            android:theme="@style/Theme.ATSOPTANDROID" />
+        <activity
+            android:name=".presentaion.components.LiveItemCard"
+            android:exported="false"
+            android:label="@string/title_activity_live_item_card"
+            android:theme="@style/Theme.ATSOPTANDROID" />
+        <activity
+            android:name=".presentaion.components.BottomNavBar"
+            android:exported="false"
+            android:label="@string/title_activity_bottom_nav_bar"
+            android:theme="@style/Theme.ATSOPTANDROID" />
+        <activity
+            android:name=".presentaion.components.TopTabBar"
+            android:exported="false"
+            android:label="@string/title_activity_top_tab_bar"
+            android:theme="@style/Theme.ATSOPTANDROID" />
+        <activity
+            android:name=".presentaion.HomeViewmodel"
+            android:exported="false"
+            android:label="@string/title_activity_home_viewmodel"
+            android:theme="@style/Theme.ATSOPTANDROID" />
+        <activity
+            android:name=".presentaion.SigninActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.ATSOPTANDROID" />
+        <activity
+            android:name=".presentaion.SignupActivity"
             android:exported="false"
             android:label="@string/title_activity_signup"
             android:theme="@style/Theme.ATSOPTANDROID" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentaion.MainActivity"
             android:exported="false"
             android:label="@string/title_activity_signin"
             android:theme="@style/Theme.ATSOPTANDROID" />
         <activity
-            android:name=".MyActivity"
+            android:name=".presentaion.MyActivity"
             android:exported="false"
             android:label="@string/title_activity_my"
             android:theme="@style/Theme.ATSOPTANDROID" />
         <activity
-            android:name=".SigninActivity"
+            android:name=".presentaion.home.HomeActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ATSOPTANDROID">

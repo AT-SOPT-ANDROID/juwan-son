@@ -1,4 +1,4 @@
-package org.sopt.at
+package org.sopt.at.presentaion
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -38,6 +38,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
+
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
@@ -45,3 +47,4 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+

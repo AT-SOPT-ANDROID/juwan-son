@@ -1,4 +1,4 @@
-package org.sopt.at
+package org.sopt.at.presentaion
 
 import android.app.Activity
 import android.content.Context

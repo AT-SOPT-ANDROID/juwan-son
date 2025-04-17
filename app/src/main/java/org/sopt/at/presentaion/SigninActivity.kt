@@ -1,4 +1,4 @@
-package org.sopt.at
+package org.sopt.at.presentaion
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -40,14 +40,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import org.sopt.at.R
+import org.sopt.at.presentaion.home.HomeActivity
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
 
 class SigninActivity : ComponentActivity() {
@@ -105,7 +105,7 @@ fun SignInScreen() {
             //
             Image(
                 //속성 부르는거 주의
-                painter = painterResource(id=R.drawable.ic_back),
+                painter = painterResource(id= R.drawable.ic_back),
                 contentDescription = "back",
                 modifier = Modifier
                     .size(64.dp)
@@ -174,7 +174,7 @@ fun SignInScreen() {
             Button(
                 onClick = {
                     if (inputId == userId && inputPw == userPw && userId.isNotEmpty() && userPw.isNotEmpty()) {
-                        val intent = Intent(context, MyActivity::class.java)
+                        val intent = Intent(context, HomeActivity::class.java)
                         intent.putExtra("id", inputId)
                         context.startActivity(intent)
                     } else {

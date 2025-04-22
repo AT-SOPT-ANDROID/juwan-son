@@ -1,4 +1,4 @@
-package org.sopt.at.presentaion.home
+package org.sopt.at.presentaion.live
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import org.sopt.at.presentation.home.TopTabBar
+import androidx.navigation.NavController
 
 @Composable
-fun LiveScreen() {
+fun LiveScreen(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

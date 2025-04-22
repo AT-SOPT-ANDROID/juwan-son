@@ -1,13 +1,6 @@
-package org.sopt.at.presentaion
+package org.sopt.at.presentaion.signin
 
-import android.app.Activity.RESULT_OK
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,7 +22,9 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -42,56 +37,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import org.sopt.at.R
-import org.sopt.at.presentaion.home.HomeActivity
-import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
 
-class SigninActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-        enableEdgeToEdge()
-        setContent {
-            ATSOPTANDROIDTheme {
-                SignInScreen()
-            }
-        }
-    }
-}
 
 @Composable
-fun Greeting2(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun SignInScreen(navController: NavController, viewModel : SignInViewModel= viewModel()) {
 
-@Composable
-fun SignInScreen() {
-
-    var userId by remember { mutableStateOf("") }
-    var userPw by remember { mutableStateOf("") }
     var inputId by remember { mutableStateOf("") }
     var inputPw by remember { mutableStateOf("") }
 
-    val context = LocalContext.current
+    val loginState by viewModel.loginState.observeAsState(SignInViewModel.LoginState.Loading)
+
+
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-
-    val signUpLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val data = result.data
-            userId = data?.getStringExtra("id") ?: ""
-            userPw = data?.getStringExtra("password") ?: ""
-        }
-    }
 
     Scaffold( modifier = Modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
@@ -110,14 +76,14 @@ fun SignInScreen() {
                 modifier = Modifier
                     .size(64.dp)
                     .padding(start = 12.dp)
-                    .padding(top=16.dp),
+                    .padding(top = 16.dp),
             )
 
             Text(
                 textAlign = TextAlign.Left,
                 text="TVING ID 로그인",
                 modifier = Modifier
-                    .padding(top=48.dp)
+                    .padding(top = 48.dp)
                     .padding(start = 16.dp),
                 color = Color.White,
                 style = TextStyle(
@@ -173,15 +139,7 @@ fun SignInScreen() {
 
             Button(
                 onClick = {
-                    if (inputId == userId && inputPw == userPw && userId.isNotEmpty() && userPw.isNotEmpty()) {
-                        val intent = Intent(context, HomeActivity::class.java)
-                        intent.putExtra("id", inputId)
-                        context.startActivity(intent)
-                    } else {
-                        scope.launch {
-                            snackbarHostState.showSnackbar("로그인 실패: 아이디 또는 비밀번호가 올바르지 않습니다.")
-                        }
-                    }
+                    viewModel.signIn(inputId, inputPw)
                 },
                 modifier = Modifier
                     .padding(16.dp)
@@ -191,8 +149,23 @@ fun SignInScreen() {
                     containerColor = Color.Gray,
                     contentColor = Color.Gray
                 )
-            ){
-                Text("로그인하기", color=Color.White)
+            ) {
+                Text("로그인하기", color = Color.White)
+            }
+
+            when (loginState) {
+                is SignInViewModel.LoginState.Loading -> {
+//                    Text("로그인 중...", color = Color.White)
+                }
+                is SignInViewModel.LoginState.Success -> {
+                    LaunchedEffect(Unit) {
+                        navController.navigate("home") // 로그인 성공 후 Home 화면으로 이동
+                    }
+                }
+                is SignInViewModel.LoginState.Failure -> {
+                    val errorMessage = (loginState as SignInViewModel.LoginState.Failure).errorMessage
+                    Text(errorMessage, color = Color.Red)
+                }
             }
 
             Column(
@@ -216,7 +189,8 @@ fun SignInScreen() {
                         modifier = Modifier
                             .padding(start = 4.dp)
                             .clickable {
-                                signUpLauncher.launch(Intent(context, SignupActivity::class.java))
+                                navController.navigate("signup")
+
                             },
                         text = "회원가입",
                         color = Color.LightGray
@@ -235,18 +209,7 @@ fun SignInScreen() {
                 )
             }
         }
+
+        }
     }
-}
 
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview2() {
-    ATSOPTANDROIDTheme  {
-        SignInScreen()
-
-
-    }
-}

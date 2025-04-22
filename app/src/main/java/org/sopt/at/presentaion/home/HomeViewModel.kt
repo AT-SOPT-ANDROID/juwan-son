@@ -14,24 +14,19 @@ class HomeViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    // BottomNavBar의 선택된 아이템 상태
     private val _selectedItem = mutableStateOf("HOME")
     val selectedItem: State<String> = _selectedItem
 
-    // 실시간 인기 LIVE 항목 리스트 상태
     private val _liveItems = mutableStateOf<List<LiveItem>>(emptyList())
     val liveItems: State<List<LiveItem>> = _liveItems
 
-    // 배너 아이템 리스트 상태
     private val _bannerItems = mutableStateOf<List<Int>>(emptyList())
     val bannerItems: State<List<Int>> = _bannerItems
 
-    // BottomNavBar 아이템 선택 시 처리하는 함수
     fun onItemSelected(item: String) {
         _selectedItem.value = item
     }
 
-    // 실시간 인기 LIVE 항목을 가져오는 함수
     fun fetchLiveItems() {
         viewModelScope.launch {
             val items = listOf(
@@ -44,7 +39,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    // 배너 이미지 데이터 가져오는 함수
     fun fetchBannerItems() {
         viewModelScope.launch {
             val banners = listOf(

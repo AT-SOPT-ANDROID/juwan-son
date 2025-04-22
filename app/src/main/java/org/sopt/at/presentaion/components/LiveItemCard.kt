@@ -20,20 +20,6 @@ import androidx.compose.ui.unit.dp
 import org.sopt.at.data.remote.model.LiveItem
 import org.sopt.at.presentaion.components.ui.theme.ui.theme.ATSOPTANDROIDTheme
 
-class LiveItemCard : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            ATSOPTANDROIDTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LiveItemCard()
-                }
-            }
-        }
-    }
-}
-
 @Composable
 fun LiveItemCard(imageRes: Int, titleText: String) {
     Card(modifier = Modifier.padding(8.dp)) {
@@ -45,10 +31,10 @@ fun LiveItemCard(imageRes: Int, titleText: String) {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview9() {
-    ATSOPTANDROIDTheme {
-        LiveItemCard()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun GreetingPreview9() {
+//    ATSOPTANDROIDTheme {
+//        LiveItemCard()
+//    }
+//}

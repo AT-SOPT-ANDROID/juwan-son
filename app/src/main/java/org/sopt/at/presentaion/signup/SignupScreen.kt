@@ -1,14 +1,9 @@
-package org.sopt.at
+package org.sopt.at.presentaion.signup
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +16,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -37,48 +31,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
-
-
-
-
-class SignupActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            ATSOPTANDROIDTheme  {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SignUpScreen()
-                }
-            }
-        }
-    }
-}
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 
 @Composable
-fun Greeting3(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview3() {
-    ATSOPTANDROIDTheme {
-        SignUpScreen()
-    }
-}
-
-
-
-@Composable
-fun SignUpScreen() {
+fun SignUpScreen(navController: NavController, viewModel: SignupViewModel = viewModel()) {
     // 여긴 fragment 가 없나
     var step by remember { mutableStateOf(0) }
     var id by remember { mutableStateOf("") }
@@ -198,12 +157,8 @@ fun SignUpScreen() {
                 Button(
                     onClick = {
                         if (password.length in 8..15) {
-                            val resultIntent = Intent().apply {
-                                putExtra("id", id)
-                                putExtra("password", password)
-                            }
-                            (context as Activity).setResult(Activity.RESULT_OK, resultIntent)
-                            (context as Activity).finish()
+                            viewModel.signUp(id,password)
+                            navController.navigate("signin")
 
                         }else {
 

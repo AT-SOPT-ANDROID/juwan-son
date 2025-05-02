@@ -35,13 +35,14 @@ import org.sopt.at.presentaion.signup.SignUpScreen
 import org.sopt.at.presentation.home.BottomNavBar
 import org.sopt.at.presentation.home.HomeViewModel
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
+import org.sopt.at.ui.theme.TivingTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ATSOPTANDROIDTheme  {
+            TivingTheme  {
                 AppContent()
             }
         }

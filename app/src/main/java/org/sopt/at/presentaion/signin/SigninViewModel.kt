@@ -1,9 +1,12 @@
 package org.sopt.at.presentaion.signin
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.util.Log
 import kotlinx.coroutines.launch
 import org.sopt.at.data.remote.model.User
 import org.sopt.at.domain.repository.UserRepository
@@ -33,3 +36,4 @@ class SignInViewModel : ViewModel() {
         data class Failure(val errorMessage: String) : LoginState()
     }
 }
+

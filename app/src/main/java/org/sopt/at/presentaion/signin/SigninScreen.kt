@@ -70,7 +70,6 @@ fun SignInScreen(navController: NavController, viewModel : SignInViewModel= view
         ) {
             //
             Image(
-                //속성 부르는거 주의
                 painter = painterResource(id= R.drawable.ic_back),
                 contentDescription = "back",
                 modifier = Modifier
@@ -155,11 +154,10 @@ fun SignInScreen(navController: NavController, viewModel : SignInViewModel= view
 
             when (loginState) {
                 is SignInViewModel.LoginState.Loading -> {
-//                    Text("로그인 중...", color = Color.White)
                 }
                 is SignInViewModel.LoginState.Success -> {
                     LaunchedEffect(Unit) {
-                        navController.navigate("home") // 로그인 성공 후 Home 화면으로 이동
+                        navController.navigate("home")
                     }
                 }
                 is SignInViewModel.LoginState.Failure -> {
@@ -212,4 +210,7 @@ fun SignInScreen(navController: NavController, viewModel : SignInViewModel= view
 
         }
     }
+
+
+
 

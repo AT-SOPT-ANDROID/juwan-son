@@ -12,17 +12,35 @@ import org.sopt.at.presentaion.signin.SignInViewModel
 class SignupViewModel : ViewModel() {
     private val userRepository = UserRepository.getInstance()
 
-    private val _signupState = MutableLiveData<SignupState>()
-    val signupState: LiveData<SignupState> get() = _signupState
+    private val _signUpState = MutableLiveData<SignUpState>()
+    val signUpState: LiveData<SignUpState> get() = _signUpState
 
-    fun signUp(id: String, password: String) {
-        val user = User(id = id, password = password)
-        userRepository.registerUser(user)
-        _signupState.value = SignupState.Success
+    fun validateId(id: String): Boolean {
+        return id.length in 6..12 && id.matches("^[a-z0-9]+$".toRegex()) // 간단한 예시 유효성 검사
     }
 
-    sealed class SignupState {
-        object Success : SignupState()
-        data class Failure(val errorMessage: String) : SignupState()
+    fun validatePassword(password: String): Boolean {
+        return password.length in 8..15 &&
+                password.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#\$%^&*])([A-Za-z\\d!@#\$%^&*]{8,15})$".toRegex())
+    }
+
+
+    fun signUp(id: String, password: String) {
+
+        _signUpState.value = SignUpState.Loading
+
+        if (validateId(id) && validatePassword(password)) {
+            val user = User(id = id, password = password)
+            userRepository.registerUser(user)
+            _signUpState.value = SignUpState.Success
+        } else {
+            _signUpState.value = SignUpState.Failure("아이디 또는 비밀번호가 유효하지 않습니다.")
+        }
+    }
+
+    sealed class SignUpState {
+        object Loading : SignUpState()
+        object Success : SignUpState()
+        data class Failure(val errorMessage: String) : SignUpState()
     }
 }

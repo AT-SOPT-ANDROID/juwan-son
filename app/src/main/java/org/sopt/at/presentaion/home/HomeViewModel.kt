@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.sopt.at.R
 import org.sopt.at.data.remote.model.LiveItem
@@ -27,7 +30,10 @@ class HomeViewModel @Inject constructor(
         _selectedItem.value = item
     }
 
-    fun fetchLiveItems() {
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+  fun fetchLiveItems(){
         viewModelScope.launch {
             val items = listOf(
                 LiveItem(1, "스누피", R.drawable.img_live_1),
@@ -39,7 +45,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun fetchBannerItems() {
+fun fetchBannerItems() {
         viewModelScope.launch {
             val banners = listOf(
                 R.drawable.ic_banner_1,
@@ -51,4 +57,5 @@ class HomeViewModel @Inject constructor(
             _bannerItems.value = banners
         }
     }
+
 }

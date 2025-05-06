@@ -21,29 +21,40 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import org.sopt.at.ui.theme.TivingTheme
 
 @Composable
 fun SignUpScreen(navController: NavController, viewModel: SignupViewModel = viewModel()) {
-    // 여긴 fragment 가 없나
+
     var step by remember { mutableStateOf(0) }
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val currentId by rememberUpdatedState(id)
+    val currentPassword by rememberUpdatedState(password)
+
+    val isButtonEnabled by remember {
+        derivedStateOf { password.length>=8 }
+    }
 
     Column(
         modifier = Modifier
@@ -55,7 +66,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignupViewModel = view
     ) {
         when (step) {
             0 -> {
-                Text("아이디를 입력해주세요.", color = Color.White, fontSize = 20.sp)
+                Text("아이디를 입력해주세요.", color = Color.White, fontSize = 20.sp, style= TivingTheme.typography.heading01_M)
 
                 TextField(
                     value = id,
@@ -77,6 +88,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignupViewModel = view
                         Text(
                             text="아이디",
                             color = Color.LightGray,
+
                         )
                     }
                 )
@@ -92,10 +104,9 @@ fun SignUpScreen(navController: NavController, viewModel: SignupViewModel = view
 
                 Button(
                     onClick = {
-                        if (id.length in 6..12) {
+                        if (viewModel.validateId(currentId)) {
                             step = 1
                         }else {
-
                             Toast.makeText(context, "아이디는 6~12자 사이여야 합니다.", Toast.LENGTH_SHORT).show()
                         }
 
@@ -156,18 +167,18 @@ fun SignUpScreen(navController: NavController, viewModel: SignupViewModel = view
 
                 Button(
                     onClick = {
-                        if (password.length in 8..15) {
-                            viewModel.signUp(id,password)
+                        if (viewModel.validatePassword(currentPassword)) {
+                            viewModel.signUp(currentId,currentPassword)
                             navController.navigate("signin")
 
                         }else {
-
                             Toast.makeText(context, "비밀번호는 8~15자 사이여야 합니다.", Toast.LENGTH_SHORT).show()
                         }
                     },
                     modifier = Modifier
                         .padding(top = 600.dp)
                         .fillMaxWidth(),
+                    enabled = isButtonEnabled,
                     colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
                     shape = RoundedCornerShape(0.dp)
                 ) {
@@ -177,4 +188,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignupViewModel = view
         }
     }
 }
+
+
+
 

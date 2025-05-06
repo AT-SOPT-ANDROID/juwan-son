@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,9 +33,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -50,6 +53,12 @@ fun HomeScreen(navController: NavController,homeViewModel: HomeViewModel){
     val context = LocalContext.current
     val liveItems = homeViewModel.liveItems.value
     val bannerItems = homeViewModel.bannerItems.value
+
+    val listState = rememberLazyListState()
+
+    val isScrolled by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0 }
+    }
     val bottomNavItems = listOf(
         BottomNavItem(name = "HOME", iconRes = R.drawable.ic_home, selectedIconRes = R.drawable.ic_home),
         BottomNavItem(name = "SHORTS", iconRes = R.drawable.ic_shorts, selectedIconRes = R.drawable.ic_shorts),
@@ -66,7 +75,6 @@ fun HomeScreen(navController: NavController,homeViewModel: HomeViewModel){
         onItemSelected = { selectedItem = it }
     )
 
-    // 화면 로드시 Items 가져오기
     LaunchedEffect(Unit) {
         homeViewModel.fetchLiveItems()
         homeViewModel.fetchBannerItems()
@@ -90,18 +98,16 @@ fun HomeScreen(navController: NavController,homeViewModel: HomeViewModel){
 
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_main_logo),
+                    imageVector = ImageVector.vectorResource(id=R.drawable.ic_main_logo),
                     contentDescription = "Main logo",
                     modifier= Modifier
                         .size(100.dp)
                         .padding(start = 16.dp)
 
-
-
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Image(
-                    painter= painterResource(R.drawable.ic_subcribe),
+                    imageVector = ImageVector.vectorResource(id=R.drawable.ic_subcribe),
                     contentDescription = "subsribe",
                     modifier= Modifier
                         .size(36.dp)

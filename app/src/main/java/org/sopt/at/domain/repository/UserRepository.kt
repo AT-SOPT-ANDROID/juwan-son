@@ -2,12 +2,11 @@ package org.sopt.at.domain.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.sopt.at.data.remote.model.User
+import org.sopt.at.data.remote.User
 
 
 class UserRepository private constructor() {
     companion object {
-        @Volatile
         private var instance: UserRepository? = null
 
         fun getInstance(): UserRepository {
@@ -16,6 +15,7 @@ class UserRepository private constructor() {
             }
         }
     }
+
 
     private val _users = MutableLiveData<List<User>>(emptyList())
     val users: LiveData<List<User>> = _users

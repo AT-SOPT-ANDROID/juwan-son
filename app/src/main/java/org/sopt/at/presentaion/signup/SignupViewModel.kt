@@ -3,11 +3,13 @@ package org.sopt.at.presentaion.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import org.sopt.at.data.remote.model.User
+import org.sopt.at.data.remote.remote.ServicePool
+import org.sopt.at.data.remote.remote.dto.signup.signuprequest
+import org.sopt.at.data.remote.remote.dto.signup.signupresponse
 import org.sopt.at.domain.repository.UserRepository
-import org.sopt.at.presentaion.signin.SignInViewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignupViewModel : ViewModel() {
     private val userRepository = UserRepository.getInstance()
@@ -21,20 +23,37 @@ class SignupViewModel : ViewModel() {
 
     fun validatePassword(password: String): Boolean {
         return password.length in 8..15 &&
-                password.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#\$%^&*])([A-Za-z\\d!@#\$%^&*]{8,15})$".toRegex())
+                password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,15}$".toRegex())
+    }
+
+    fun validateNickname(nickname: String): Boolean {
+        return nickname.length >= 2
     }
 
 
-    fun signUp(id: String, password: String) {
-
+    fun signUp(id: String, password: String, nickname :String) {
         _signUpState.value = SignUpState.Loading
 
-        if (validateId(id) && validatePassword(password)) {
-            val user = User(id = id, password = password)
-            userRepository.registerUser(user)
-            _signUpState.value = SignUpState.Success
+        if (validateId(id) && validatePassword(password) && validateNickname(nickname)) {
+            val request = signuprequest(id, password, nickname)
+
+            val call = ServicePool.signupApi.SignupService(request)
+
+            call.enqueue(object : Callback<signupresponse> {
+                override fun onResponse(call: Call<signupresponse>, response: Response<signupresponse>) {
+                    if (response.isSuccessful) {
+                        _signUpState.postValue(SignUpState.Success)
+                    } else {
+                        _signUpState.postValue(SignUpState.Failure("서버 응답 오류: ${response.message()}"))
+                    }
+                }
+
+                override fun onFailure(call: Call<signupresponse>, t: Throwable) {
+                    _signUpState.postValue(SignUpState.Failure("네트워크 오류: ${t.localizedMessage}"))
+                }
+            })
         } else {
-            _signUpState.value = SignUpState.Failure("아이디 또는 비밀번호가 유효하지 않습니다.")
+
         }
     }
 

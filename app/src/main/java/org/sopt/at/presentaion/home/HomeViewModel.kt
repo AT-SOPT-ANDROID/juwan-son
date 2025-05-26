@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.sopt.at.R
-import org.sopt.at.data.remote.model.LiveItem
+import org.sopt.at.data.remote.LiveItem
 import javax.inject.Inject
 
 // Inject annotation을 달 것

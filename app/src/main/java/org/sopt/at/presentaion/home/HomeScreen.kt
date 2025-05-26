@@ -1,6 +1,5 @@
 package org.sopt.at.presentaion.home
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import org.sopt.at.R
-import org.sopt.at.data.remote.model.BottomNavItem
+import org.sopt.at.data.remote.BottomNavItem
 import org.sopt.at.presentaion.components.LiveItemCard
 import org.sopt.at.presentation.home.BottomNavBar
 import org.sopt.at.presentation.home.HomeViewModel

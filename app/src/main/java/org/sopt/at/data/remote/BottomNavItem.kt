@@ -1,4 +1,4 @@
-package org.sopt.at.data.remote.model
+package org.sopt.at.data.remote
 
 data class BottomNavItem(
     val name: String,

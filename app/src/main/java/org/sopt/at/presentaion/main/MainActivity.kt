@@ -1,5 +1,7 @@
 package org.sopt.at.presentaion.main
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,13 +19,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import org.sopt.at.PrefsManager
 import org.sopt.at.R
-import org.sopt.at.data.remote.model.BottomNavItem
+import org.sopt.at.data.remote.BottomNavItem
 import org.sopt.at.presentaion.history.HistoryScreen
 import org.sopt.at.presentaion.home.HomeScreen
 import org.sopt.at.presentaion.live.LiveScreen
@@ -31,6 +35,7 @@ import org.sopt.at.presentaion.my.MyScreen
 import org.sopt.at.presentaion.search.SearchScreen
 import org.sopt.at.presentaion.shorts.ShortsScreen
 import org.sopt.at.presentaion.signin.SignInScreen
+import org.sopt.at.presentaion.signin.SignInViewModel
 import org.sopt.at.presentaion.signup.SignUpScreen
 import org.sopt.at.presentation.home.BottomNavBar
 import org.sopt.at.presentation.home.HomeViewModel
@@ -38,11 +43,17 @@ import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
 import org.sopt.at.ui.theme.TivingTheme
 
 class MainActivity : ComponentActivity() {
+    private lateinit var signInViewModel: SignInViewModel
+    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        PrefsManager.init(applicationContext)
         enableEdgeToEdge()
         setContent {
             TivingTheme  {
+                sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                signInViewModel = ViewModelProvider(this).get(SignInViewModel::class.java)
+                signInViewModel.setSharedPreferences(sharedPreferences)
                 AppContent()
             }
         }

@@ -45,9 +45,8 @@ import kotlinx.coroutines.launch
 import org.sopt.at.R
 
 
-
 @Composable
-fun SignInScreen(navController: NavController, viewModel : SignInViewModel= viewModel()) {
+fun SignInScreen(navController: NavController, viewModel: SignInViewModel = viewModel()) {
 
     var inputId by remember { mutableStateOf("") }
     var inputPw by remember { mutableStateOf("") }
@@ -55,11 +54,11 @@ fun SignInScreen(navController: NavController, viewModel : SignInViewModel= view
     val loginState by viewModel.loginState.observeAsState(SignInViewModel.LoginState.Loading)
 
 
-
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    Scaffold( modifier = Modifier.fillMaxSize(),
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding ->
         Column(
@@ -70,7 +69,7 @@ fun SignInScreen(navController: NavController, viewModel : SignInViewModel= view
         ) {
             //
             Image(
-                painter = painterResource(id= R.drawable.ic_back),
+                painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = "back",
                 modifier = Modifier
                     .size(64.dp)
@@ -80,13 +79,13 @@ fun SignInScreen(navController: NavController, viewModel : SignInViewModel= view
 
             Text(
                 textAlign = TextAlign.Left,
-                text="TVING ID 로그인",
+                text = "TVING ID 로그인",
                 modifier = Modifier
                     .padding(top = 48.dp)
                     .padding(start = 16.dp),
                 color = Color.White,
                 style = TextStyle(
-                    fontSize=24.sp,
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
             )
@@ -107,7 +106,7 @@ fun SignInScreen(navController: NavController, viewModel : SignInViewModel= view
                 ),
                 placeholder = {
                     Text(
-                        text="아이디",
+                        text = "아이디",
                         color = Color.LightGray,
                     )
                 }
@@ -130,7 +129,7 @@ fun SignInScreen(navController: NavController, viewModel : SignInViewModel= view
                 ),
                 placeholder = {
                     Text(
-                        text="비밀번호",
+                        text = "비밀번호",
                         color = Color.LightGray,
                     )
                 }
@@ -155,13 +154,16 @@ fun SignInScreen(navController: NavController, viewModel : SignInViewModel= view
             when (loginState) {
                 is SignInViewModel.LoginState.Loading -> {
                 }
+
                 is SignInViewModel.LoginState.Success -> {
                     LaunchedEffect(Unit) {
                         navController.navigate("home")
                     }
                 }
+
                 is SignInViewModel.LoginState.Failure -> {
-                    val errorMessage = (loginState as SignInViewModel.LoginState.Failure).errorMessage
+                    val errorMessage =
+                        (loginState as SignInViewModel.LoginState.Failure).errorMessage
                     Text(errorMessage, color = Color.Red)
                 }
             }
@@ -208,8 +210,8 @@ fun SignInScreen(navController: NavController, viewModel : SignInViewModel= view
             }
         }
 
-        }
     }
+}
 
 
 
